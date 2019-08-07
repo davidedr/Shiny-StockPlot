@@ -45,11 +45,18 @@ server <- function(input, output) {
                from = input$dates[1],
                to = input$dates[2],
                auto.assign = FALSE)
+     
   })
-
+  
+  dataInput_a <- reactive({
+    if (input$adjust)
+      return (adjust(dataInput()))
+    return (dataInput())
+  })
+  
   output$plot <- renderPlot({
 
-    chartSeries(dataInput(), theme = chartTheme("white"),
+    chartSeries(dataInput_a(), theme = chartTheme("white"),
                 type = "line", log.scale = input$log, TA = NULL)
   })
 
